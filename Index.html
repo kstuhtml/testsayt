@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <title>Matndan So'z Qidirish</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+    }
+    .highlight {
+      background-color: #5fa8d3;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Matndan So'z Qidirish va Belgilash</h1>
+
+  <textarea id="textInput" placeholder="Bu yerga matn yozing yoki yuklang..."></textarea><br /><br />
+
+  <input type="text" id="searchWord" placeholder="Qidiriladigan so'z">
+  <button onclick="highlightWord()">Qidirish</button>
+
+  <h2>Natija:</h2>
+  <div id="output"></div>
+
+  <script>
+    const textInput = document.getElementById('textInput');
+    const output = document.getElementById('output');
+
+    // Matnni localStorage'dan yuklash
+    window.onload = function () {
+      const savedText = localStorage.getItem('testMatni');
+      if (savedText) {
+        textInput.value = savedText;
+        showOutput(savedText);
+      }
+    };
+
+    // Matn o‘zgarsa avtomatik saqlash
+    textInput.addEventListener('input', () => {
+      localStorage.setItem('testMatni', textInput.value);
+      showOutput(textInput.value);
+    });
+
+    function highlightWord() {
+      const word = document.getElementById('searchWord').value;
+      const text = textInput.value;
+
+      const highlighted = text.replace(new RegExp(`(${word})`, 'gi'), `<span class="highlight">$1</span>`);
+      output.innerHTML = highlighted.replace(/\n/g, '<br>');
+    }
+
+    function showOutput(text) {
+      output.innerHTML = text.replace(/\n/g, '<br>');
+    }
+  </script>
+</body>
+</html>
